@@ -1,4 +1,4 @@
-package UnitTests.Buffer;
+package UnitTests.buffer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

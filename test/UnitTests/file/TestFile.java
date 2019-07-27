@@ -1,4 +1,4 @@
-package UnitTests.File;
+package UnitTests.file;
 
 import mattdb.file.Block;
 import mattdb.file.FileMgr;

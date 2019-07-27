@@ -1,4 +1,4 @@
-package UnitTests.File;
+package UnitTests.file;
 
 import java.nio.ByteBuffer;
 

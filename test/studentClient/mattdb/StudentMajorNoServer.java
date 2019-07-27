@@ -1,4 +1,4 @@
-package studentClient.simpledb;
+package studentClient.mattdb;
 
 import mattdb.query.Plan;
 import mattdb.query.Scan;

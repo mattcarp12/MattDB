@@ -1,4 +1,4 @@
-package UnitTests.Buffer;
+package UnitTests.buffer;
 
 import mattdb.buffer.PageFormatter;
 import mattdb.file.Page;
