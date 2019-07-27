@@ -1,7 +1,11 @@
 package studentClient.simpledb;
 
-import java.sql.*;
 import mattdb.remote.SimpleDriver;
+
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ChangeMajor {
     public static void main(String[] args) {
@@ -15,16 +19,13 @@ public class ChangeMajor {
                     + "where SName = 'amy'";
             stmt.executeUpdate(cmd);
             System.out.println("Amy is now a drama major.");
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (conn != null)
                     conn.close();
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

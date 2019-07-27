@@ -1,8 +1,11 @@
 package mattdb.server;
 
 
-import mattdb.remote.*;
-import java.rmi.registry.*;
+import mattdb.remote.RemoteDriver;
+import mattdb.remote.RemoteDriverImpl;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class Startup {
     public static void main(String[] args) throws Exception {

@@ -1,13 +1,11 @@
 package mattdb.server;
 
+import mattdb.buffer.BufferMgr;
 import mattdb.file.FileMgr;
-import mattdb.buffer.*;
-import mattdb.tx.Transaction;
 import mattdb.log.LogMgr;
 import mattdb.metadata.MetadataMgr;
 import mattdb.planner.*;
-import mattdb.opt.HeuristicQueryPlanner;
-import mattdb.index.planner.IndexUpdatePlanner;
+import mattdb.tx.Transaction;
 
 /**
  * The class that provides system-wide static global values.
@@ -17,23 +15,24 @@ import mattdb.index.planner.IndexUpdatePlanner;
  * {@link #initFileAndLogMgr(String) initFileAndLogMgr},
  * {@link #initFileLogAndBufferMgr(String) initFileLogAndBufferMgr},
  * and {@link #initMetadataMgr(boolean, Transaction) initMetadataMgr}
- * provide limited initialization, and are useful for 
+ * provide limited initialization, and are useful for
  * debugging purposes.
- * 
+ *
  * @author Edward Sciore
  */
 public class MattDB {
    public static int BUFFER_SIZE = 8;
    public static String LOG_FILE = "simpledb.log";
-   
-   private static FileMgr     fm;
-   private static BufferMgr   bm;
-   private static LogMgr      logm;
+
+   private static FileMgr fm;
+   private static BufferMgr bm;
+   private static LogMgr logm;
    private static MetadataMgr mdm;
-   
+
    /**
     * Initializes the system.
     * This method is called during system startup.
+    *
     * @param dirname the name of the database directory
     */
    public static void init(String dirname) {
@@ -49,58 +48,75 @@ public class MattDB {
       initMetadataMgr(isnew, tx);
       tx.commit();
    }
-   
-   // The following initialization methods are useful for 
-   // testing the lower-level components of the system 
+
+   // The following initialization methods are useful for
+   // testing the lower-level components of the system
    // without having to initialize everything.
-   
+
    /**
     * Initializes only the file manager.
+    *
     * @param dirname the name of the database directory
     */
    public static void initFileMgr(String dirname) {
       fm = new FileMgr(dirname);
    }
-   
+
    /**
     * Initializes the file and log managers.
+    *
     * @param dirname the name of the database directory
     */
    public static void initFileAndLogMgr(String dirname) {
       initFileMgr(dirname);
       logm = new LogMgr(LOG_FILE);
    }
-   
+
    /**
     * Initializes the file, log, and buffer managers.
+    *
     * @param dirname the name of the database directory
     */
    public static void initFileLogAndBufferMgr(String dirname) {
       initFileAndLogMgr(dirname);
       bm = new BufferMgr(BUFFER_SIZE);
    }
-   
+
    /**
     * Initializes metadata manager.
+    *
     * @param isnew an indication of whether a new
-    * database needs to be created.
-    * @param tx the transaction performing the initialization
+    *              database needs to be created.
+    * @param tx    the transaction performing the initialization
     */
    public static void initMetadataMgr(boolean isnew, Transaction tx) {
       mdm = new MetadataMgr(isnew, tx);
    }
-   
-   public static FileMgr     fileMgr()   { return fm; }
-   public static BufferMgr   bufferMgr() { return bm; }
-   public static LogMgr      logMgr()    { return logm; }
-   public static MetadataMgr mdMgr()     { return mdm; }
-   
+
+   public static FileMgr fileMgr() {
+      return fm;
+   }
+
+   public static BufferMgr bufferMgr() {
+      return bm;
+   }
+
+   public static LogMgr logMgr() {
+      return logm;
+   }
+
+   public static MetadataMgr mdMgr() {
+      return mdm;
+   }
+
    /**
     * Creates a planner for SQL commands.
     * To change how the planner works, modify this method.
+    *
     * @return the system's planner for SQL commands
-    */public static Planner planner() {
-      QueryPlanner  qplanner = new BasicQueryPlanner();
+    */
+   public static Planner planner() {
+      QueryPlanner qplanner = new BasicQueryPlanner();
       UpdatePlanner uplanner = new BasicUpdatePlanner();
       return new Planner(qplanner, uplanner);
    }

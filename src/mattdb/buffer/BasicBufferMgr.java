@@ -2,14 +2,15 @@ package mattdb.buffer;
 
 import mattdb.buffer.ReplacementManager.LRUReplacementManager;
 import mattdb.buffer.ReplacementManager.ReplacementManager;
-import mattdb.file.*;
+import mattdb.file.Block;
+import mattdb.file.FileMgr;
 
 import java.util.HashMap;
 
 /**
  * Manages the pinning and unpinning of buffers to blocks.
- * @author Edward Sciore
  *
+ * @author Edward Sciore
  */
 class BasicBufferMgr {
     private Buffer[] bufferpool;
@@ -28,6 +29,7 @@ class BasicBufferMgr {
      * Thus this constructor cannot be called until
      * {@link mattdb.server.MattDB#initFileAndLogMgr(String)} or
      * is called first.
+     *
      * @param numbuffs the number of buffer slots to allocate
      */
     BasicBufferMgr(int numbuffs) {
@@ -35,7 +37,7 @@ class BasicBufferMgr {
         numAvailable = numbuffs;
         availableBuffers = new LRUReplacementManager();
         blockMap = new HashMap<>();
-        for (int i=0; i<numbuffs; i++) {
+        for (int i = 0; i < numbuffs; i++) {
             bufferpool[i] = new Buffer();
             availableBuffers.add(i);
         }
@@ -43,6 +45,7 @@ class BasicBufferMgr {
 
     /**
      * Flushes the dirty buffers modified by the specified transaction.
+     *
      * @param txnum the transaction's id number
      */
     synchronized void flushAll(int txnum) {
@@ -57,6 +60,7 @@ class BasicBufferMgr {
      * then that buffer is used;
      * otherwise, an unpinned buffer from the pool is chosen.
      * Returns a null value if there are no available buffers.
+     *
      * @param blk a reference to a disk block
      * @return the pinned buffer
      */
@@ -91,10 +95,10 @@ class BasicBufferMgr {
             buff.assignToBlock(blk);
             blockMap.put(blk, bufferIndex);
         }
-        if (!buff.isPinned()){
+        if (!buff.isPinned()) {
             numAvailable--;
             int bufferIndex = blockMap.get(buff.block());
-            availableBuffers.remove((Integer)bufferIndex);
+            availableBuffers.remove(bufferIndex);
         }
 
         buff.pin();
@@ -106,8 +110,9 @@ class BasicBufferMgr {
      * pins a buffer to it.
      * Returns null (without allocating the block) if
      * there are no available buffers.
+     *
      * @param filename the name of the Tests.file
-     * @param fmtr a pageformatter object, used to format the new block
+     * @param fmtr     a pageformatter object, used to format the new block
      * @return the pinned buffer
      */
     synchronized Buffer pinNew(String filename, PageFormatter fmtr) {
@@ -125,6 +130,7 @@ class BasicBufferMgr {
 
     /**
      * Unpins the specified buffer.
+     *
      * @param buff the buffer to be unpinned
      */
     synchronized void unpin(Buffer buff) {
@@ -139,6 +145,7 @@ class BasicBufferMgr {
 
     /**
      * Returns the number of available (i.e. unpinned) buffers.
+     *
      * @return the number of available buffers
      */
     int available() {

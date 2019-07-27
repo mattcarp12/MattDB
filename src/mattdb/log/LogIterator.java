@@ -1,8 +1,11 @@
 package mattdb.log;
 
-import static mattdb.file.Page.INT_SIZE;
-import mattdb.file.*;
+import mattdb.file.Block;
+import mattdb.file.Page;
+
 import java.util.Iterator;
+
+import static mattdb.file.Page.INT_SIZE;
 
 /**
  * A class that provides the ability to move through the
@@ -30,10 +33,11 @@ class LogIterator implements Iterator<BasicLogRecord> {
     /**
      * Determines if the current log record
      * is the earliest record in the log file.
+     *
      * @return true if there is an earlier record
      */
     public boolean hasNext() {
-        return currentrec>0 || blk.number()>0;
+        return currentrec > 0 || blk.number() > 0;
     }
 
     /**
@@ -41,13 +45,14 @@ class LogIterator implements Iterator<BasicLogRecord> {
      * If the current log record is the earliest in its block,
      * then the method moves to the next oldest block,
      * and returns the log record from there.
+     *
      * @return the next earliest log record
      */
     public BasicLogRecord next() {
         if (currentrec == 0)
             moveToNextBlock();
         currentrec = pg.getInt(currentrec);
-        return new BasicLogRecord(pg, currentrec+INT_SIZE);
+        return new BasicLogRecord(pg, currentrec + INT_SIZE);
     }
 
     public void remove() {
@@ -59,7 +64,7 @@ class LogIterator implements Iterator<BasicLogRecord> {
      * and positions it after the last record in that block.
      */
     private void moveToNextBlock() {
-        blk = new Block(blk.fileName(), blk.number()-1);
+        blk = new Block(blk.fileName(), blk.number() - 1);
         pg.read(blk);
         currentrec = pg.getInt(LogMgr.LAST_POS);
     }

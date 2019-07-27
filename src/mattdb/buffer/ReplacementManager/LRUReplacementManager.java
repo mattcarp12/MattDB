@@ -13,20 +13,20 @@ public class LRUReplacementManager implements ReplacementManager {
 
     @Override
     public void add(int idx) {
-        availableBuffers.add((Integer)idx);
+        availableBuffers.add(idx);
     }
 
     @Override
     public Integer get() {
         try {
             return availableBuffers.remove(0);
-        } catch(IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             return -1;
         }
     }
 
     @Override
     public void remove(int bufferIndex) {
-        availableBuffers.remove((Integer)bufferIndex);
+        availableBuffers.remove((Integer) bufferIndex);
     }
 }

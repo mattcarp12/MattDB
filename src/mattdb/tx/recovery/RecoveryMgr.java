@@ -1,14 +1,18 @@
 package mattdb.tx.recovery;
 
-import static mattdb.tx.recovery.LogRecord.*;
-import mattdb.file.Block;
 import mattdb.buffer.Buffer;
+import mattdb.file.Block;
 import mattdb.server.MattDB;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import static mattdb.tx.recovery.LogRecord.*;
 
 /**
  * The recovery manager.  Each transaction has its own recovery manager.
+ *
  * @author Edward Sciore
  */
 public class RecoveryMgr {
@@ -16,6 +20,7 @@ public class RecoveryMgr {
 
    /**
     * Creates a recovery manager for the specified transaction.
+    *
     * @param txnum the ID of the specified transaction
     */
    public RecoveryMgr(int txnum) {
@@ -58,7 +63,8 @@ public class RecoveryMgr {
     * Writes a setint record to the log, and returns its lsn.
     * Updates to temporary files are not logged; instead, a
     * "dummy" negative lsn is returned.
-    * @param buff the buffer containing the page
+    *
+    * @param buff   the buffer containing the page
     * @param offset the offset of the value in the page
     * @param newval the value to be written
     */
@@ -75,7 +81,8 @@ public class RecoveryMgr {
     * Writes a setstring record to the log, and returns its lsn.
     * Updates to temporary files are not logged; instead, a
     * "dummy" negative lsn is returned.
-    * @param buff the buffer containing the page
+    *
+    * @param buff   the buffer containing the page
     * @param offset the offset of the value in the page
     * @param newval the value to be written
     */

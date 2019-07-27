@@ -1,9 +1,13 @@
 package mattdb.log;
 
+import mattdb.file.Block;
+import mattdb.file.FileMgr;
+import mattdb.file.Page;
 import mattdb.server.MattDB;
-import mattdb.file.*;
+
+import java.util.Iterator;
+
 import static mattdb.file.Page.*;
-import java.util.*;
 
 /**
  * The low-level log manager.
@@ -13,6 +17,7 @@ import java.util.*;
  * The log manager does not understand the meaning of these
  * values, which are written and read by the
  * {@link mattdb.tx.recovery.RecoveryMgr recovery manager}.
+ *
  * @author Edward Sciore
  */
 public class LogMgr implements Iterable<BasicLogRecord> {
@@ -38,6 +43,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
      * Thus this constructor cannot be called until
      * {@link MattDB#initFileMgr(String)}
      * is called first.
+     *
      * @param logfile the name of the log file
      */
     public LogMgr(String logfile) {
@@ -46,7 +52,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
         if (logsize == 0)
             appendNewBlock();
         else {
-            currentblk = new Block(logfile, logsize-1);
+            currentblk = new Block(logfile, logsize - 1);
             mypage.read(currentblk);
             currentpos = getLastRecordPosition() + INT_SIZE;
         }
@@ -56,6 +62,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
      * Ensures that the log records corresponding to the
      * specified LSN has been written to disk.
      * All earlier log records will also be written to disk.
+     *
      * @param lsn the LSN of a log record
      */
     public void flush(int lsn) {
@@ -66,6 +73,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
     /**
      * Returns an iterator for the log records,
      * which will be returned in reverse order starting with the most recent.
+     *
      * @see java.lang.Iterable#iterator()
      */
     public synchronized Iterator<BasicLogRecord> iterator() {
@@ -79,6 +87,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
      * The method also writes an integer to the end of each log record whose value
      * is the offset of the corresponding integer for the previous log record.
      * These integers allow log records to be read in reverse order.
+     *
      * @param rec the list of values
      * @return the LSN of the final value
      */
@@ -86,7 +95,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
         int recsize = INT_SIZE;  // 4 bytes for the integer that points to the previous log record
         for (Object obj : rec)
             recsize += size(obj);
-        if (currentpos + recsize >= BLOCK_SIZE){ // the log record doesn't fit,
+        if (currentpos + recsize >= BLOCK_SIZE) { // the log record doesn't fit,
             flush();        // so move to the next block.
             appendNewBlock();
         }
@@ -99,18 +108,20 @@ public class LogMgr implements Iterable<BasicLogRecord> {
     /**
      * Adds the specified value to the page at the position denoted by
      * currentpos.  Then increments currentpos by the size of the value.
+     *
      * @param val the integer or string to be added to the page
      */
     private void appendVal(Object val) {
         if (val instanceof String)
-            mypage.setString(currentpos, (String)val);
+            mypage.setString(currentpos, (String) val);
         else
-            mypage.setInt(currentpos, (Integer)val);
+            mypage.setInt(currentpos, (Integer) val);
         currentpos += size(val);
     }
 
     /**
      * Calculates the size of the specified integer or string.
+     *
      * @param val the value
      * @return the size of the value, in bytes
      */
@@ -118,8 +129,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
         if (val instanceof String) {
             String sval = (String) val;
             return STR_SIZE(sval.length());
-        }
-        else
+        } else
             return INT_SIZE;
     }
 
@@ -127,6 +137,7 @@ public class LogMgr implements Iterable<BasicLogRecord> {
      * Returns the LSN of the most recent log record.
      * As implemented, the LSN is the block number where the record is stored.
      * Thus every log record in a block has the same LSN.
+     *
      * @return the LSN of the most recent log record
      */
     private int currentLSN() {

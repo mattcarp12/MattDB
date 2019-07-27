@@ -1,7 +1,8 @@
 package mattdb.buffer;
 
+import mattdb.file.Block;
+import mattdb.file.Page;
 import mattdb.server.MattDB;
-import mattdb.file.*;
 
 /**
  * An individual buffer.
@@ -11,6 +12,7 @@ import mattdb.file.*;
  * whether the contents of the page have been modified,
  * and if so, the id of the modifying transaction and
  * the LSN of the corresponding log record.
+ *
  * @author Edward Sciore
  */
 public class Buffer {
@@ -21,26 +23,28 @@ public class Buffer {
    private int logSequenceNumber = -1; // negative means no corresponding log record
 
    /**
-    * Creates a new buffer, wrapping a new 
+    * Creates a new buffer, wrapping a new
     * {@link mattdb.file.Page page}.
-    * This constructor is called exclusively by the 
-    * class {@link BasicBufferMgr}.   
-    * It depends on  the 
+    * This constructor is called exclusively by the
+    * class {@link BasicBufferMgr}.
+    * It depends on  the
     * {@link mattdb.log.LogMgr LogMgr} object
     * that it gets from the class
     * {@link MattDB}.
     * That object is created during system initialization.
-    * Thus this constructor cannot be called until 
+    * Thus this constructor cannot be called until
     * {@link MattDB#initFileAndLogMgr(String)} or
     * is called first.
     */
-   public Buffer() {}
-   
+   public Buffer() {
+   }
+
    /**
     * Returns the integer value at the specified offset of the
     * buffer's page.
     * If an integer was not stored at that location,
     * the behavior of the method is unpredictable.
+    *
     * @param offset the byte offset of the page
     * @return the integer value at that offset
     */
@@ -53,6 +57,7 @@ public class Buffer {
     * buffer's page.
     * If a string was not stored at that location,
     * the behavior of the method is unpredictable.
+    *
     * @param offset the byte offset of the page
     * @return the string value at that offset
     */
@@ -69,15 +74,16 @@ public class Buffer {
     * and the LSN of the log record.
     * A negative lsn value indicates that a log record
     * was not necessary.
+    *
     * @param offset the byte offset within the page
-    * @param val the new integer value to be written
-    * @param txnum the id of the transaction performing the modification
-    * @param lsn the LSN of the corresponding log record
+    * @param val    the new integer value to be written
+    * @param txnum  the id of the transaction performing the modification
+    * @param lsn    the LSN of the corresponding log record
     */
    public void setInt(int offset, int val, int txnum, int lsn) {
       modifiedBy = txnum;
       if (lsn >= 0)
-	      logSequenceNumber = lsn;
+         logSequenceNumber = lsn;
       contents.setInt(offset, val);
    }
 
@@ -90,21 +96,23 @@ public class Buffer {
     * was not necessary.
     * The buffer saves the id of the transaction
     * and the LSN of the log record.
+    *
     * @param offset the byte offset within the page
-    * @param val the new string value to be written
-    * @param txnum the id of the transaction performing the modification
-    * @param lsn the LSN of the corresponding log record
+    * @param val    the new string value to be written
+    * @param txnum  the id of the transaction performing the modification
+    * @param lsn    the LSN of the corresponding log record
     */
    public void setString(int offset, String val, int txnum, int lsn) {
       modifiedBy = txnum;
       if (lsn >= 0)
-	      logSequenceNumber = lsn;
+         logSequenceNumber = lsn;
       contents.setString(offset, val);
    }
 
    /**
     * Returns a reference to the disk block
     * that the buffer is pinned to.
+    *
     * @return a reference to a disk block
     */
    public Block block() {
@@ -143,6 +151,7 @@ public class Buffer {
    /**
     * Returns true if the buffer is currently pinned
     * (that is, if it has a nonzero pin count).
+    *
     * @return true if the buffer is pinned
     */
    boolean isPinned() {
@@ -152,6 +161,7 @@ public class Buffer {
    /**
     * Returns true if the buffer is dirty
     * due to a modification by the specified transaction.
+    *
     * @param txnum the id of the transaction
     * @return true if the transaction modified the buffer
     */
@@ -164,6 +174,7 @@ public class Buffer {
     * the buffer's page.
     * If the buffer was dirty, then the contents
     * of the previous page are first written to disk.
+    *
     * @param b a reference to the data block
     */
    void assignToBlock(Block b) {
@@ -178,8 +189,9 @@ public class Buffer {
     * and appends the page to the specified file.
     * If the buffer was dirty, then the contents
     * of the previous page are first written to disk.
+    *
     * @param filename the name of the file
-    * @param fmtr a page formatter, used to initialize the page
+    * @param fmtr     a page formatter, used to initialize the page
     */
    Block assignToNew(String filename, PageFormatter fmtr) {
       flush();

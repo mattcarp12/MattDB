@@ -6,6 +6,7 @@ import mattdb.file.Page;
  * An interface used to initialize a new block on disk.
  * There will be an implementing class for each "type" of
  * disk block.
+ *
  * @author Edward Sciore
  */
 public interface PageFormatter {
@@ -14,7 +15,8 @@ public interface PageFormatter {
     * written to a new disk block.
     * This method is called only during the method
     * {@link Buffer#assignToNew}.
+    *
     * @param p a buffer page
     */
-   public void format(Page p);
+   void format(Page p);
 }

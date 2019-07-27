@@ -1,10 +1,8 @@
 package studentClient.simpledb;
 
-import java.io.File;
-import java.io.IOException;
-
-import mattdb.server.MattDB;
 import mattdb.server.Startup;
+
+import java.io.File;
 
 public class TestBasicFunctionality {
 
@@ -12,7 +10,7 @@ public class TestBasicFunctionality {
         String homedir = System.getProperty("user.home");
         File dbDirectory = new File(homedir, "TestDB");
         if (dbDirectory.exists()) {
-            for(String file : dbDirectory.list()) {
+            for (String file : dbDirectory.list()) {
                 new File(dbDirectory, file).delete();
             }
             dbDirectory.delete();
@@ -24,7 +22,7 @@ public class TestBasicFunctionality {
         String[] dbName = {"TestDB"};
         try {
             Startup.main(dbName);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         CreateStudentDB.main(new String[]{});
