@@ -19,7 +19,7 @@ public class TestBasicFunctionality {
 
     public static void main(String[] args) {
         deleteDbDir();
-        String[] dbName = {"TestDB"};
+        String[] dbName = {"studentdb"};
         try {
             Startup.main(dbName);
         } catch (Exception e) {
