@@ -48,7 +48,11 @@ public class Transaction {
       recoveryMgr.commit();
       concurMgr.release();
       myBuffers.unpinAll();
-      System.out.println("transaction " + txnum + " committed");
+      System.out.println("transaction " + txnum + " committed with " +
+              MattDB.fileMgr().getNumReads() + " reads, " +
+              MattDB.fileMgr().getNumWrites() + " writes.");
+      MattDB.fileMgr().resetReadCounter();
+      MattDB.fileMgr().resetWriteCounter();
    }
    
    /**
@@ -62,7 +66,11 @@ public class Transaction {
       recoveryMgr.rollback();
       concurMgr.release();
       myBuffers.unpinAll();
-      System.out.println("transaction " + txnum + " rolled back");
+      System.out.println("transaction " + txnum + " rolled back with " +
+              MattDB.fileMgr().getNumReads() + " reads, " +
+              MattDB.fileMgr().getNumWrites() + " writes.");
+      MattDB.fileMgr().resetReadCounter();
+      MattDB.fileMgr().resetWriteCounter();
    }
    
    /**

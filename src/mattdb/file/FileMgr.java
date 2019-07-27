@@ -27,6 +27,8 @@ public class FileMgr {
    private File dbDirectory;
    private boolean isNew;
    private Map<String,FileChannel> openFiles = new HashMap<String,FileChannel>();
+   int blockReadCounter;
+   int blockWriteCounter;
 
    /**
     * Creates a file manager for the specified database.
@@ -49,7 +51,10 @@ public class FileMgr {
       // remove any leftover temporary tables
       for (String filename : dbDirectory.list())
          if (filename.startsWith("temp"))
-         new File(dbDirectory, filename).delete();
+            new File(dbDirectory, filename).delete();
+
+      blockReadCounter = 0;
+      blockReadCounter = 0;
    }
 
    /**
@@ -62,6 +67,7 @@ public class FileMgr {
          bb.clear();
          FileChannel fc = getFile(blk.fileName());
          fc.read(bb, blk.number() * BLOCK_SIZE);
+         blockReadCounter++;
       }
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
@@ -78,6 +84,7 @@ public class FileMgr {
          bb.rewind();
          FileChannel fc = getFile(blk.fileName());
          fc.write(bb, blk.number() * BLOCK_SIZE);
+         blockWriteCounter++;
       }
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
@@ -111,6 +118,36 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot access " + filename);
       }
+   }
+
+   /**
+    * Returns the number of reads in current transaction
+    * @return number of reads
+    */
+   public int getNumReads() {
+      return blockReadCounter;
+   }
+
+   /**
+    * Returns the number of block writes in current transaction
+    * @return number of writes
+    */
+   public int getNumWrites() {
+      return blockWriteCounter;
+   }
+
+   /**
+    * Resets the block read counter to zero
+    */
+   public void resetReadCounter() {
+      blockReadCounter = 0;
+   }
+
+   /**
+    * Resets the block write counter to zero
+    */
+   public void resetWriteCounter() {
+      blockWriteCounter = 0;
    }
 
    /**
