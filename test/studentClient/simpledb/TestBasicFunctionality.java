@@ -28,6 +28,9 @@ public class TestBasicFunctionality {
             e.printStackTrace();
         }
         CreateStudentDB.main(new String[]{});
+        StudentMajor.main(new String[]{});
+        FindMajors.main(new String[]{"math"});
+        ChangeMajor.main(new String[]{});
 
     }
 
