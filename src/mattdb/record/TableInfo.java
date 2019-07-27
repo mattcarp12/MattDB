@@ -103,4 +103,8 @@ public class TableInfo {
         else
             return STR_SIZE(schema.length(fldname));
     }
+
+    public int bitLocation(String fldname) {
+        return schema.bitLocation(fldname);
+    }
 }

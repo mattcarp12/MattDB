@@ -8,7 +8,7 @@ import mattdb.tx.Transaction;
 
 public class TestRecordFile {
 
-    public void main() {
+    public static void main(String[] args) {
         MattDB.init("studentdb");
         Transaction tx = new Transaction();
         Schema sch = new Schema();

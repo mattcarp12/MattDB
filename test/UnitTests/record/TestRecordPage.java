@@ -9,7 +9,7 @@ import mattdb.tx.Transaction;
 
 public class TestRecordPage {
 
-    public static void main() {
+    public static void main(String[] args) {
         MattDB.init("studentdb");
 
         Schema sch = new Schema();

@@ -170,4 +170,12 @@ public class RecordFile {
       RecordFormatter fmtr = new RecordFormatter(ti);
       tx.append(filename, fmtr);
    }
+
+    public void setNull(String fldname) {
+        rp.setNull(fldname);
+    }
+
+    public boolean isNull(String fldname) {
+        return rp.isNull(fldname);
+    }
 }

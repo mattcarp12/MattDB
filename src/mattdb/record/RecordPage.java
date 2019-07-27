@@ -166,10 +166,22 @@ public class RecordPage {
         currentslot++;
         while (isValidSlot()) {
             int position = currentpos();
-            if (tx.getInt(blk, position) == flag)
+            if ((tx.getInt(blk, position) & 1) == flag)
                 return true;
             currentslot++;
         }
         return false;
+    }
+
+    public void setNull(String fldname) {
+        int bitLocation = ti.bitLocation(fldname);
+        int nullFlg = (1 << bitLocation) | tx.getInt(blk, currentpos()); //set the bit at bitLocation
+        tx.setInt(blk, currentpos(), nullFlg);
+    }
+
+    public boolean isNull(String fldname) {
+        int bitLocation = ti.bitLocation(fldname);
+        int nullFlg = (tx.getInt(blk, currentpos()) >> bitLocation) & 1; //get the bit at bitLocation
+        return nullFlg == 1;
     }
 }

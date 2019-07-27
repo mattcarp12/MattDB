@@ -17,6 +17,7 @@ import static java.sql.Types.VARCHAR;
  */
 public class Schema {
     private Map<String, FieldInfo> info = new HashMap<String, FieldInfo>();
+    int numFields;
 
     /**
      * Creates an empty schema.
@@ -24,6 +25,7 @@ public class Schema {
      * via the five addXXX methods.
      */
     public Schema() {
+        numFields = 0;
     }
 
     /**
@@ -37,7 +39,8 @@ public class Schema {
      * @param length  the conceptual length of a string field.
      */
     public void addField(String fldname, int type, int length) {
-        info.put(fldname, new FieldInfo(type, length));
+        info.put(fldname, new FieldInfo(type, length, ++numFields));
+
     }
 
     /**
@@ -118,6 +121,10 @@ public class Schema {
         return info.get(fldname).type;
     }
 
+    int bitLocation(String fldname) {
+        return info.get(fldname).index;
+    }
+
     /**
      * Returns the conceptual length of the specified field.
      * If the field is not a string field, then
@@ -131,11 +138,12 @@ public class Schema {
     }
 
     class FieldInfo {
-        int type, length;
+        int type, length, index;
 
-        public FieldInfo(int type, int length) {
+        public FieldInfo(int type, int length, int index) {
             this.type = type;
             this.length = length;
+            this.index = index;
         }
     }
 }
