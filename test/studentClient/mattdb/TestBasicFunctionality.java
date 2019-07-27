@@ -8,7 +8,7 @@ public class TestBasicFunctionality {
 
     public static void deleteDbDir() {
         String homedir = System.getProperty("user.home");
-        File dbDirectory = new File(homedir, "TestDB");
+        File dbDirectory = new File(homedir, "studentdb");
         if (dbDirectory.exists()) {
             for (String file : dbDirectory.list()) {
                 new File(dbDirectory, file).delete();
