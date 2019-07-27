@@ -5,9 +5,6 @@ import mattdb.buffer.ReplacementManager.ReplacementManager;
 import mattdb.file.*;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Manages the pinning and unpinning of buffers to blocks.
@@ -18,7 +15,7 @@ class BasicBufferMgr {
     private Buffer[] bufferpool;
     private int numAvailable;
     HashMap<Block, Integer> blockMap;
-    private ReplacementManager rm;
+    private ReplacementManager availableBuffers;
 
     /**
      * Creates a buffer manager having the specified number
@@ -36,11 +33,11 @@ class BasicBufferMgr {
     BasicBufferMgr(int numbuffs) {
         bufferpool = new Buffer[numbuffs];
         numAvailable = numbuffs;
-        rm = new LRUReplacementManager();
+        availableBuffers = new LRUReplacementManager();
         blockMap = new HashMap<>();
         for (int i=0; i<numbuffs; i++) {
             bufferpool[i] = new Buffer();
-            rm.add(i);
+            availableBuffers.add(i);
         }
     }
 
@@ -82,7 +79,7 @@ class BasicBufferMgr {
       */
 
       /*
-      If the buffer does not have an associated buffer,
+      If the block does not have an associated buffer,
       need to replace a buffer in the buffer pool.
       This is the job of the replacement manager.
        */
@@ -97,7 +94,7 @@ class BasicBufferMgr {
         if (!buff.isPinned()){
             numAvailable--;
             int bufferIndex = blockMap.get(buff.block());
-            rm.remove((Integer)bufferIndex);
+            availableBuffers.remove((Integer)bufferIndex);
         }
 
         buff.pin();
@@ -118,6 +115,7 @@ class BasicBufferMgr {
         int bufferIndex = chooseUnpinnedBuffer(); //removes buffer from unpinned list
         if (bufferIndex == -1) return null;
         Buffer buff = bufferpool[bufferIndex];
+        blockMap.remove(buff.block());
         Block blk = buff.assignToNew(filename, fmtr);
         numAvailable--;
         buff.pin();
@@ -134,7 +132,7 @@ class BasicBufferMgr {
         if (!buff.isPinned()) {
             numAvailable++;
             int bufferIndex = blockMap.get(buff.block());
-            rm.add(bufferIndex);
+            availableBuffers.add(bufferIndex);
         }
 
     }
@@ -167,6 +165,6 @@ class BasicBufferMgr {
    */
 
     private int chooseUnpinnedBuffer() {
-        return rm.get();
+        return availableBuffers.get();
     }
 }

@@ -5,21 +5,21 @@ import java.util.ArrayList;
 
 public class LRUReplacementManager implements ReplacementManager {
 
-    ArrayList<Integer> list;
+    ArrayList<Integer> availableBuffers;
 
     public LRUReplacementManager() {
-        this.list = new ArrayList<Integer>();
+        this.availableBuffers = new ArrayList<Integer>();
     }
 
     @Override
     public void add(int idx) {
-        list.add((Integer)idx);
+        availableBuffers.add((Integer)idx);
     }
 
     @Override
     public Integer get() {
         try {
-            return list.remove(0);
+            return availableBuffers.remove(0);
         } catch(IndexOutOfBoundsException e) {
             return -1;
         }
@@ -27,6 +27,6 @@ public class LRUReplacementManager implements ReplacementManager {
 
     @Override
     public void remove(int bufferIndex) {
-        list.remove((Integer)bufferIndex);
+        availableBuffers.remove((Integer)bufferIndex);
     }
 }
