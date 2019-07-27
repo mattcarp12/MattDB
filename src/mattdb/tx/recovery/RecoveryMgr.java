@@ -3,7 +3,8 @@ package mattdb.tx.recovery;
 import static mattdb.tx.recovery.LogRecord.*;
 import mattdb.file.Block;
 import mattdb.buffer.Buffer;
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
+
 import java.util.*;
 
 /**
@@ -26,9 +27,9 @@ public class RecoveryMgr {
     * Writes a commit record to the log, and flushes it to disk.
     */
    public void commit() {
-      SimpleDB.bufferMgr().flushAll(txnum);
+      MattDB.bufferMgr().flushAll(txnum);
       int lsn = new CommitRecord(txnum).writeToLog();
-      SimpleDB.logMgr().flush(lsn);
+      MattDB.logMgr().flush(lsn);
    }
 
    /**
@@ -36,9 +37,9 @@ public class RecoveryMgr {
     */
    public void rollback() {
       doRollback();
-      SimpleDB.bufferMgr().flushAll(txnum);
+      MattDB.bufferMgr().flushAll(txnum);
       int lsn = new RollbackRecord(txnum).writeToLog();
-      SimpleDB.logMgr().flush(lsn);
+      MattDB.logMgr().flush(lsn);
    }
 
    /**
@@ -47,9 +48,9 @@ public class RecoveryMgr {
     */
    public void recover() {
       doRecover();
-      SimpleDB.bufferMgr().flushAll(txnum);
+      MattDB.bufferMgr().flushAll(txnum);
       int lsn = new CheckpointRecord().writeToLog();
-      SimpleDB.logMgr().flush(lsn);
+      MattDB.logMgr().flush(lsn);
 
    }
 

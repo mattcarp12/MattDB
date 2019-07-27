@@ -1,6 +1,6 @@
 package mattdb.query;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.metadata.*;
 import mattdb.record.*;
@@ -21,8 +21,8 @@ public class TablePlan implements Plan {
     */
    public TablePlan(String tblname, Transaction tx) {
       this.tx = tx;
-      ti = SimpleDB.mdMgr().getTableInfo(tblname, tx);
-      si = SimpleDB.mdMgr().getStatInfo(tblname, ti, tx);
+      ti = MattDB.mdMgr().getTableInfo(tblname, tx);
+      si = MattDB.mdMgr().getStatInfo(tblname, ti, tx);
    }
    
    /**

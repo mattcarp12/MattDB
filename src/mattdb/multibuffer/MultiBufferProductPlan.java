@@ -1,6 +1,6 @@
 package mattdb.multibuffer;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.record.*;
 import mattdb.materialize.*;
@@ -60,7 +60,7 @@ public class MultiBufferProductPlan implements Plan {
     */
    public int blocksAccessed() {
       // this guesses at the # of chunks
-      int avail = SimpleDB.bufferMgr().available();
+      int avail = MattDB.bufferMgr().available();
       int size = new MaterializePlan(rhs, tx).blocksAccessed();
       int numchunks = size / avail;
       return rhs.blocksAccessed() +

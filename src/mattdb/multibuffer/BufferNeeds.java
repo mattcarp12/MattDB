@@ -1,6 +1,6 @@
 package mattdb.multibuffer;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 
 /**
  * A class containing static methods,
@@ -19,7 +19,7 @@ public class BufferNeeds {
     * @return the highest number less than the number of available buffers, that is a root of the plan's output size
     */
    public static int bestRoot(int size) {
-      int avail = SimpleDB.bufferMgr().available();
+      int avail = MattDB.bufferMgr().available();
       if (avail <= 1)
          return 1;
       int k = Integer.MAX_VALUE;
@@ -40,7 +40,7 @@ public class BufferNeeds {
     * @return the highest number less than the number of available buffers, that is a factor of the plan's output size
     */
    public static int bestFactor(int size) {
-      int avail = SimpleDB.bufferMgr().available();
+      int avail = MattDB.bufferMgr().available();
       if (avail <= 1)
          return 1;
       int k = size;

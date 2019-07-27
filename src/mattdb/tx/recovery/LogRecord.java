@@ -1,7 +1,7 @@
 package mattdb.tx.recovery;
 
 import mattdb.log.LogMgr;
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 
 /**
  * The interface implemented by each type of log record.
@@ -15,7 +15,7 @@ public interface LogRecord {
       COMMIT = 2, ROLLBACK  = 3,
       SETINT = 4, SETSTRING = 5;
    
-   static final LogMgr logMgr = SimpleDB.logMgr();
+   static final LogMgr logMgr = MattDB.logMgr();
    
    /**
     * Writes the record to the log and returns its LSN.

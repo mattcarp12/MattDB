@@ -1,6 +1,6 @@
 package mattdb.tx.recovery;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.buffer.*;
 import mattdb.file.Block;
 import mattdb.log.BasicLogRecord;
@@ -71,7 +71,7 @@ class SetStringRecord implements LogRecord {
     * @see mattdb.tx.recovery.LogRecord#undo(int)
     */
    public void undo(int txnum) {
-      BufferMgr buffMgr = SimpleDB.bufferMgr();
+      BufferMgr buffMgr = MattDB.bufferMgr();
       Buffer buff = buffMgr.pin(blk);
       buff.setString(offset, val, txnum, -1);
       buffMgr.unpin(buff);

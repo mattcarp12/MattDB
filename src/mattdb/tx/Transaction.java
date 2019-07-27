@@ -1,6 +1,6 @@
 package mattdb.tx;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.file.Block;
 import mattdb.buffer.*;
 import mattdb.tx.recovery.RecoveryMgr;
@@ -25,11 +25,11 @@ public class Transaction {
     * recovery and concurrency managers.
     * This constructor depends on the file, log, and buffer
     * managers that it gets from the class
-    * {@link mattdb.server.SimpleDB}.
+    * {@link MattDB}.
     * Those objects are created during system initialization.
     * Thus this constructor cannot be called until either
-    * {@link mattdb.server.SimpleDB#init(String)} or
-    * {@link mattdb.server.SimpleDB#initFileLogAndBufferMgr(String)} or
+    * {@link MattDB#init(String)} or
+    * {@link MattDB#initFileLogAndBufferMgr(String)} or
     * is called first.
     */
    public Transaction() {
@@ -74,7 +74,7 @@ public class Transaction {
     * before user transactions begin.
     */
    public void recover() {
-      SimpleDB.bufferMgr().flushAll(txnum);
+      MattDB.bufferMgr().flushAll(txnum);
       recoveryMgr.recover();
    }
    
@@ -178,7 +178,7 @@ public class Transaction {
    public int size(String filename) {
       Block dummyblk = new Block(filename, END_OF_FILE);
       concurMgr.sLock(dummyblk);
-      return SimpleDB.fileMgr().size(filename);
+      return MattDB.fileMgr().size(filename);
    }
    
    /**

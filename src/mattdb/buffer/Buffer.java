@@ -1,6 +1,6 @@
 package mattdb.buffer;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.file.*;
 
 /**
@@ -28,10 +28,10 @@ public class Buffer {
     * It depends on  the 
     * {@link mattdb.log.LogMgr LogMgr} object
     * that it gets from the class
-    * {@link mattdb.server.SimpleDB}.
+    * {@link MattDB}.
     * That object is created during system initialization.
     * Thus this constructor cannot be called until 
-    * {@link mattdb.server.SimpleDB#initFileAndLogMgr(String)} or
+    * {@link MattDB#initFileAndLogMgr(String)} or
     * is called first.
     */
    public Buffer() {}
@@ -120,7 +120,7 @@ public class Buffer {
     */
    void flush() {
       if (modifiedBy >= 0) {
-         SimpleDB.logMgr().flush(logSequenceNumber);
+         MattDB.logMgr().flush(logSequenceNumber);
          contents.write(blk);
          modifiedBy = -1;
       }

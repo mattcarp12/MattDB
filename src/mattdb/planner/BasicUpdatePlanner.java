@@ -1,7 +1,7 @@
 package mattdb.planner;
 
 import java.util.Iterator;
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.parse.*;
 import mattdb.query.*;
@@ -53,16 +53,16 @@ public class BasicUpdatePlanner implements UpdatePlanner {
    }
    
    public int executeCreateTable(CreateTableData data, Transaction tx) {
-      SimpleDB.mdMgr().createTable(data.tableName(), data.newSchema(), tx);
+      MattDB.mdMgr().createTable(data.tableName(), data.newSchema(), tx);
       return 0;
    }
    
    public int executeCreateView(CreateViewData data, Transaction tx) {
-      SimpleDB.mdMgr().createView(data.viewName(), data.viewDef(), tx);
+      MattDB.mdMgr().createView(data.viewName(), data.viewDef(), tx);
       return 0;
    }
    public int executeCreateIndex(CreateIndexData data, Transaction tx) {
-      SimpleDB.mdMgr().createIndex(data.indexName(), data.tableName(), data.fieldName(), tx);
+      MattDB.mdMgr().createIndex(data.indexName(), data.tableName(), data.fieldName(), tx);
       return 0;  
    }
 }

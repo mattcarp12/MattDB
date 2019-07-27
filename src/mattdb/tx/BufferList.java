@@ -1,6 +1,6 @@
 package mattdb.tx;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.file.Block;
 import mattdb.buffer.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
 class BufferList {
    private Map<Block,Buffer> buffers = new HashMap<Block,Buffer>();
    private List<Block> pins = new ArrayList<Block>();
-   private BufferMgr bufferMgr = SimpleDB.bufferMgr();
+   private BufferMgr bufferMgr = MattDB.bufferMgr();
    
    /**
     * Returns the buffer pinned to the specified block.

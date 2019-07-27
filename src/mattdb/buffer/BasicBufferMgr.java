@@ -1,6 +1,7 @@
 package mattdb.buffer;
 
 import mattdb.file.*;
+import mattdb.server.MattDB;
 
 /**
  * Manages the pinning and unpinning of buffers to blocks.
@@ -17,10 +18,10 @@ class BasicBufferMgr {
     * This constructor depends on both the {@link FileMgr} and
     * {@link mattdb.log.LogMgr LogMgr} objects
     * that it gets from the class
-    * {@link mattdb.server.SimpleDB}.
+    * {@link MattDB}.
     * Those objects are created during system initialization.
     * Thus this constructor cannot be called until 
-    * {@link mattdb.server.SimpleDB#initFileAndLogMgr(String)} or
+    * {@link MattDB#initFileAndLogMgr(String)} or
     * is called first.
     * @param numbuffs the number of buffer slots to allocate
     */

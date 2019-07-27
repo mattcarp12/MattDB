@@ -3,7 +3,7 @@ package mattdb.tx.recovery;
 import static mattdb.tx.recovery.LogRecord.*;
 import java.util.Iterator;
 import mattdb.log.BasicLogRecord;
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 
 /**
  * A class that provides the ability to read records
@@ -14,7 +14,7 @@ import mattdb.server.SimpleDB;
  * @author Edward Sciore
  */
 class LogRecordIterator implements Iterator<LogRecord> {
-   private Iterator<BasicLogRecord> iter = SimpleDB.logMgr().iterator();
+   private Iterator<BasicLogRecord> iter = MattDB.logMgr().iterator();
    
    public boolean hasNext() {
       return iter.hasNext();

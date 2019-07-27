@@ -5,13 +5,13 @@ import java.rmi.registry.*;
 import java.util.Properties;
 
 /**
- * The SimpleDB database driver.
+ * The MattDB database driver.
  * @author Edward Sciore
  */
 public class SimpleDriver extends DriverAdapter {
    
    /**
-    * Connects to the SimpleDB server on the specified host.
+    * Connects to the MattDB server on the specified host.
     * The method retrieves the RemoteDriver stub from
     * the RMI registry on the specified host.
     * It then calls the connect method on that stub,

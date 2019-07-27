@@ -5,7 +5,7 @@ import mattdb.query.*;
 import mattdb.record.Schema;
 
 /**
- * The SimpleDB parser.
+ * The MattDB parser.
  * @author Edward Sciore
  */
 public class Parser {

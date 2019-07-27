@@ -1,5 +1,7 @@
 package mattdb.file;
 
+import mattdb.server.MattDB;
+
 import static mattdb.file.Page.BLOCK_SIZE;
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -7,7 +9,7 @@ import java.nio.channels.FileChannel;
 import java.util.*;
 
 /**
- * The SimpleDB file manager.
+ * The MattDB file manager.
  * The database system stores its data as files within a specified directory.
  * The file manager provides methods for reading the contents of
  * a file block to a Java byte buffer,
@@ -16,7 +18,7 @@ import java.util.*;
  * These methods are called exclusively by the class {@link mattdb.file.Page Page},
  * and are thus package-private.
  * The class also contains two public methods:
- * Method {@link #isNew() isNew} is called during system initialization by {@link mattdb.server.SimpleDB#init}.
+ * Method {@link #isNew() isNew} is called during system initialization by {@link MattDB#init}.
  * Method {@link #size(String) size} is called by the log manager and transaction manager to
  * determine the end of the file.
  * @author Edward Sciore

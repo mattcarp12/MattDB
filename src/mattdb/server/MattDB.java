@@ -22,7 +22,7 @@ import mattdb.index.planner.IndexUpdatePlanner;
  * 
  * @author Edward Sciore
  */
-public class SimpleDB {
+public class MattDB {
    public static int BUFFER_SIZE = 8;
    public static String LOG_FILE = "simpledb.log";
    

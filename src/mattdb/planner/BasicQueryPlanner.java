@@ -1,9 +1,10 @@
 package mattdb.planner;
 
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.query.*;
 import mattdb.parse.*;
-import mattdb.server.SimpleDB;
+
 import java.util.*;
 
 /**
@@ -21,9 +22,9 @@ public class BasicQueryPlanner implements QueryPlanner {
       //Step 1: Create a plan for each mentioned table or view
       List<Plan> plans = new ArrayList<Plan>();
       for (String tblname : data.tables()) {
-         String viewdef = SimpleDB.mdMgr().getViewDef(tblname, tx);
+         String viewdef = MattDB.mdMgr().getViewDef(tblname, tx);
          if (viewdef != null)
-            plans.add(SimpleDB.planner().createQueryPlan(viewdef, tx));
+            plans.add(MattDB.planner().createQueryPlan(viewdef, tx));
          else
             plans.add(new TablePlan(tblname, tx));
       }

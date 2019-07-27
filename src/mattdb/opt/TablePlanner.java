@@ -1,12 +1,13 @@
 package mattdb.opt;
 
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.record.Schema;
 import mattdb.query.*;
 import mattdb.index.query.*;
 import mattdb.metadata.IndexInfo;
 import mattdb.multibuffer.MultiBufferProductPlan;
-import mattdb.server.SimpleDB;
+
 import java.util.Map;
 
 /**
@@ -35,7 +36,7 @@ class TablePlanner {
       this.tx  = tx;
       myplan   = new TablePlan(tblname, tx);
       myschema = myplan.schema();
-      indexes  = SimpleDB.mdMgr().getIndexInfo(tblname, tx);
+      indexes  = MattDB.mdMgr().getIndexInfo(tblname, tx);
    }
    
    /**

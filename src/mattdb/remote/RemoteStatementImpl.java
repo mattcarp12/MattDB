@@ -1,8 +1,9 @@
 package mattdb.remote;
 
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.query.Plan;
-import mattdb.server.SimpleDB;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -28,7 +29,7 @@ class RemoteStatementImpl extends UnicastRemoteObject implements RemoteStatement
    public RemoteResultSet executeQuery(String qry) throws RemoteException {
       try {
          Transaction tx = rconn.getTransaction();
-         Plan pln = SimpleDB.planner().createQueryPlan(qry, tx);
+         Plan pln = MattDB.planner().createQueryPlan(qry, tx);
          return new RemoteResultSetImpl(pln, rconn);
       }
       catch(RuntimeException e) {
@@ -46,7 +47,7 @@ class RemoteStatementImpl extends UnicastRemoteObject implements RemoteStatement
    public int executeUpdate(String cmd) throws RemoteException {
       try {
          Transaction tx = rconn.getTransaction();
-         int result = SimpleDB.planner().executeUpdate(cmd, tx);
+         int result = MattDB.planner().executeUpdate(cmd, tx);
          rconn.commit();
          return result;
       }

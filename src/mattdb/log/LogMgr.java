@@ -1,6 +1,6 @@
 package mattdb.log;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.file.*;
 import static mattdb.file.Page.*;
 import java.util.*;
@@ -33,16 +33,16 @@ public class LogMgr implements Iterable<BasicLogRecord> {
      * with an empty first block.
      * This constructor depends on a {@link FileMgr} object
      * that it gets from the method
-     * {@link mattdb.server.SimpleDB#fileMgr()}.
+     * {@link MattDB#fileMgr()}.
      * That object is created during system initialization.
      * Thus this constructor cannot be called until
-     * {@link mattdb.server.SimpleDB#initFileMgr(String)}
+     * {@link MattDB#initFileMgr(String)}
      * is called first.
      * @param logfile the name of the log file
      */
     public LogMgr(String logfile) {
         this.logfile = logfile;
-        int logsize = SimpleDB.fileMgr().size(logfile);
+        int logsize = MattDB.fileMgr().size(logfile);
         if (logsize == 0)
             appendNewBlock();
         else {

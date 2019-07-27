@@ -2,12 +2,11 @@ package mattdb.metadata;
 
 import static java.sql.Types.INTEGER;
 import static mattdb.file.Page.BLOCK_SIZE;
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import mattdb.tx.Transaction;
 import mattdb.record.*;
 import mattdb.index.Index;
 import mattdb.index.hash.HashIndex;
-import mattdb.index.btree.BTreeIndex; //in case we change to btree indexing
 
 
 /**
@@ -36,8 +35,8 @@ public class IndexInfo {
       this.idxname = idxname;
       this.fldname = fldname;
       this.tx = tx;
-      ti = SimpleDB.mdMgr().getTableInfo(tblname, tx);
-      si = SimpleDB.mdMgr().getStatInfo(tblname, ti, tx);
+      ti = MattDB.mdMgr().getTableInfo(tblname, tx);
+      si = MattDB.mdMgr().getStatInfo(tblname, ti, tx);
    }
    
    /**

@@ -20,7 +20,7 @@ public class CountFn implements AggregationFn {
    
    /**
     * Starts a new count.
-    * Since SimpleDB does not support null values,
+    * Since MattDB does not support null values,
     * every record will be counted,
     * regardless of the field.
     * The current count is thus set to 1.
@@ -31,7 +31,7 @@ public class CountFn implements AggregationFn {
    }
    
    /**
-    * Since SimpleDB does not support null values,
+    * Since MattDB does not support null values,
     * this method always increments the count,
     * regardless of the field.
     * @see mattdb.materialize.AggregationFn#processNext(mattdb.query.Scan)

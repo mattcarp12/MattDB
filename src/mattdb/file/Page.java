@@ -1,6 +1,6 @@
 package mattdb.file;
 
-import mattdb.server.SimpleDB;
+import mattdb.server.MattDB;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -67,18 +67,18 @@ public class Page {
    }
    
    private ByteBuffer contents = ByteBuffer.allocateDirect(BLOCK_SIZE);
-   private FileMgr filemgr = SimpleDB.fileMgr();
+   private FileMgr filemgr = MattDB.fileMgr();
    
    /**
     * Creates a new page.  Although the constructor takes no arguments,
     * it depends on a {@link FileMgr} object that it gets from the
-    * method {@link mattdb.server.SimpleDB#fileMgr()}.
+    * method {@link MattDB#fileMgr()}.
     * That object is created during system initialization.
     * Thus this constructor cannot be called until either
-    * {@link mattdb.server.SimpleDB#init(String)} or
-    * {@link mattdb.server.SimpleDB#initFileMgr(String)} or
-    * {@link mattdb.server.SimpleDB#initFileAndLogMgr(String)} or
-    * {@link mattdb.server.SimpleDB#initFileLogAndBufferMgr(String)}
+    * {@link MattDB#init(String)} or
+    * {@link MattDB#initFileMgr(String)} or
+    * {@link MattDB#initFileAndLogMgr(String)} or
+    * {@link MattDB#initFileLogAndBufferMgr(String)}
     * is called first.
     */
    public Page() {}
