@@ -63,8 +63,16 @@ public class TableMgr {
     */
    public void createTable(String tblname, Schema sch, Transaction tx) {
       TableInfo ti = new TableInfo(tblname, sch);
-      // insert one record into tblcat
+      // Check if table already exists
       RecordFile tcatfile = new RecordFile(tcatInfo, tx);
+      while (tcatfile.next()) {
+         if (tcatfile.getString("tblname").equals(tblname)) {
+            System.out.println("Table already exists in database.");
+            tcatfile.close();
+            return;
+         }
+      }
+      // insert one record into tblcat
       tcatfile.insert();
       tcatfile.setString("tblname", tblname);
       tcatfile.setInt("reclength", ti.recordLength());
@@ -92,7 +100,7 @@ public class TableMgr {
     * @return the table's stored metadata
     */
    public TableInfo getTableInfo(String tblname, Transaction tx) {
-      RecordFile tcatfile = new RecordFile(tcatInfo, tx);
+      RecordFile tcatfile = new RecordFile(tcatInfo, tx);  // load the table catalog file
       int reclen = -1;
       while (tcatfile.next())
          if (tcatfile.getString("tblname").equals(tblname)) {
@@ -100,6 +108,7 @@ public class TableMgr {
             break;
          }
       tcatfile.close();
+      if (reclen == -1) return null;
 
       RecordFile fcatfile = new RecordFile(fcatInfo, tx);
       Schema sch = new Schema();

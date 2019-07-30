@@ -47,11 +47,17 @@ public class FileMgr {
      */
     public FileMgr(String dbname) {
         String homedir = System.getProperty("user.home");
-        dbDirectory = new File(homedir, dbname);
+        //dbDirectory = new File(homedir, dbname);
+        if (dbname.lastIndexOf('\\') == -1) {
+            dbDirectory = new File(homedir, dbname);
+        } else {
+            dbDirectory = new File(homedir + "\\" + dbname.substring(0, dbname.lastIndexOf('\\')),
+                    dbname.substring(dbname.lastIndexOf('\\') + 1));
+        }
         isNew = !dbDirectory.exists();
 
         // create the directory if the database is new
-        if (isNew && !dbDirectory.mkdir())
+        if (isNew && !dbDirectory.mkdirs())
             throw new RuntimeException("cannot create " + dbname);
 
         // remove any leftover temporary tables
