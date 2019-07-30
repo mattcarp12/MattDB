@@ -195,4 +195,14 @@ public class FileMgr {
         }
         return fc;
     }
+
+    public void deleteFile(String filename) {
+        openFiles.remove(filename);
+        File delFile = new File(dbDirectory, filename);
+        if (delFile.delete()) {
+            System.out.println("Deleted file: " + filename);
+        } else {
+            System.out.println("Unable to delete file: " + filename);
+        }
+    }
 }
