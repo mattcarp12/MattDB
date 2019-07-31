@@ -91,7 +91,7 @@ public class TableMgr {
         fcatfile.close();
     }
 
-    public void dropTable(String tblname, Schema sch, Transaction tx) {
+    public void dropTable(String tblname, Transaction tx) {
         //TableInfo ti = new TableInfo(tblname,sch);
         RecordFile tcatfile = new RecordFile(tcatInfo, tx);
         while (tcatfile.next()) {
