@@ -36,5 +36,10 @@ public class TableMgrTest {
         sch.addStringField("dname", 8);
         mdMgr.createTable("dept", sch, tx1);
         tx1.commit();
+
+// Part 4: Drop DEPT table
+        tx1 = new Transaction();
+        mdMgr.dropTable("dept", tx1);
+        tx1.commit();
     }
 }

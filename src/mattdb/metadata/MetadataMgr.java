@@ -23,6 +23,10 @@ public class MetadataMgr {
       tblmgr.createTable(tblname, sch, tx);
    }
 
+   public void dropTable(String tblname, Transaction tx) {
+      tblmgr.dropTable(tblname, tx);
+   }
+
    public TableInfo getTableInfo(String tblname, Transaction tx) {
       return tblmgr.getTableInfo(tblname, tx);
    }
